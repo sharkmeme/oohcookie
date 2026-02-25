@@ -8,11 +8,12 @@ const products = [
   {
     name: "Spekulatius Biscoff",
     price: "4,90 \u20AC",
-    description: "W\u00FCrzig, karamellisiert, butterweich.",
-    taste: "W\u00FCrzig, karamellisiert, butterweich.",
-    badges: ["Bio-Mehl", "Grasgef\u00FCtterte Butter", "Ohne Konservierungsstoffe"],
-    gradient: "linear-gradient(145deg, #C4956A 0%, #8B5E3C 100%)",
+    description: "Würzig, karamellisiert, butterweich.",
+    taste: "Würzig, karamellisiert, butterweich.",
+    badges: ["Bio-Mehl", "Grasgefütterte Butter", "Ohne Konservierungsstoffe"],
+    gradient: "linear-gradient(145deg, #D4956A 0%, #B5722A 50%, #8B5530 100%)",
     overlayName: "Spekulatius",
+    tag: "Bestseller",
   },
   {
     name: "Pistachio Dream",
@@ -20,26 +21,29 @@ const products = [
     description: "Nussig, cremig, leicht salzig.",
     taste: "Nussig, cremig, leicht salzig.",
     badges: ["Bio-Mehl", "Echte Pistazien", "Ohne Farbstoffe"],
-    gradient: "linear-gradient(145deg, #8FBC8F 0%, #4A7C59 100%)",
+    gradient: "linear-gradient(145deg, #8FBC8F 0%, #5A9060 50%, #3D6B42 100%)",
     overlayName: "Pistachio",
+    tag: "Neu",
   },
   {
     name: "White Choc Macadamia",
     price: "4,50 \u20AC",
-    description: "Buttrig, s\u00FC\u00DF, leicht knusprig.",
-    taste: "Buttrig, s\u00FC\u00DF, leicht knusprig.",
-    badges: ["Grasgef\u00FCtterte Butter", "Echte Macadamia", "Kein Palm\u00F6l"],
-    gradient: "linear-gradient(145deg, #F5E6D3 0%, #D4A57A 100%)",
+    description: "Buttrig, süß, leicht knusprig.",
+    taste: "Buttrig, süß, leicht knusprig.",
+    badges: ["Grasgefütterte Butter", "Echte Macadamia", "Kein Palmöl"],
+    gradient: "linear-gradient(145deg, #F5E6D3 0%, #D4A57A 50%, #B8845A 100%)",
     overlayName: "Macadamia",
+    tag: null,
   },
   {
     name: "Chocolate Chip Classic",
     price: "4,20 \u20AC",
     description: "Schokoladig, vollmundig, perfekt gesalzen.",
     taste: "Schokoladig, vollmundig, perfekt gesalzen.",
-    badges: ["Bio-Schokolade", "Grasgef\u00FCtterte Butter", "Handgemacht"],
-    gradient: "linear-gradient(145deg, #5C3D2E 0%, #2C1810 100%)",
+    badges: ["Bio-Schokolade", "Grasgefütterte Butter", "Handgemacht"],
+    gradient: "linear-gradient(145deg, #6B4226 0%, #4A2C18 50%, #2C1810 100%)",
     overlayName: "Classic",
+    tag: null,
   },
 ]
 
@@ -51,7 +55,6 @@ function ProductCard({
   index: number
 }) {
   const [ingredientsOpen, setIngredientsOpen] = useState(false)
-  const isDark = product.name === "Chocolate Chip Classic"
 
   return (
     <motion.div
@@ -62,18 +65,30 @@ function ProductCard({
       transition={{ duration: 0.5, delay: index * 0.12 }}
       whileHover={{ y: -6, transition: { duration: 0.3 } }}
     >
-      {/* Image area */}
+      {/* FIX 8: Image area - bigger, bolder */}
       <div
-        className="aspect-square flex items-center justify-center relative overflow-hidden"
+        className="aspect-square min-h-[200px] flex items-center justify-center relative overflow-hidden rounded-t-3xl"
         style={{ background: product.gradient }}
       >
         <div className="absolute inset-0 opacity-20" style={{
           background: "radial-gradient(circle at 50% 40%, rgba(250,246,240,0.5) 0%, transparent 60%)"
         }} />
-        <span className="text-[80px] relative z-10 drop-shadow-lg group-hover:scale-110 transition-transform duration-500">{"\uD83C\uDF6A"}</span>
-        <div className="absolute bottom-5 left-5 z-10">
-          <p className={`font-serif text-lg italic ${isDark ? "text-white/80" : "text-white/90"}`}>
-            {product.overlayName}
+
+        {/* Tag badge */}
+        {product.tag && (
+          <span className="absolute top-3 right-3 z-20 bg-[#7C9A6B] text-white rounded-full text-xs px-3 py-1 font-sans font-bold">
+            {product.tag}
+          </span>
+        )}
+
+        <span className="text-[72px] relative z-10 drop-shadow-lg group-hover:scale-110 transition-transform duration-500">{"🍪"}</span>
+
+        {/* Bottom gradient overlay with product name */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-5 pb-4 pt-12" style={{
+          background: "linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)"
+        }}>
+          <p className="font-serif text-lg italic font-bold text-white">
+            {product.name}
           </p>
         </div>
       </div>
@@ -175,9 +190,9 @@ export function ProductGrid() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-[#7C9A6B] mb-4 block">
+          <div className="inline-flex items-center gap-1.5 bg-[#EAF2E5] text-[#4A7C59] rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-widest mb-4">
             Unsere Sorten
-          </span>
+          </div>
           <h2 className="font-serif text-[40px] md:text-[56px] lg:text-[64px] font-bold text-[#2C1810] leading-[1.05]">
             Die Favoriten
           </h2>

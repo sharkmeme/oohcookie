@@ -37,7 +37,7 @@ export function MobileBottomBar() {
           <SheetHeader className="border-b border-[#E8DFD4] pb-5">
             <SheetTitle className="font-serif text-2xl text-[#2C1810]">Deine Box</SheetTitle>
             <SheetDescription className="font-sans text-[13px] text-[#9C8B80]">
-              {"Fuege Cookies hinzu, um deine Box zu fuellen."}
+              Füge Cookies hinzu, um deine Box zu füllen.
             </SheetDescription>
           </SheetHeader>
           <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
@@ -48,10 +48,10 @@ export function MobileBottomBar() {
               Deine Box ist noch leer.
             </p>
             <p className="font-sans text-sm text-[#9C8B80] mt-2 max-w-[200px]">
-              {"Entdecke unsere Sorten und fuege deine Favoriten hinzu."}
+              Entdecke unsere Sorten und füge deine Favoriten hinzu.
             </p>
             <a href="#shop" onClick={() => setCartOpen(false)} className="mt-6 inline-flex items-center gap-2 text-[#7C9A6B] font-sans text-sm font-semibold hover:gap-3 transition-all">
-              Jetzt stoebern <ArrowRight className="w-4 h-4" />
+              Jetzt stöbern <ArrowRight className="w-4 h-4" />
             </a>
           </div>
           <SheetFooter className="border-t border-[#E8DFD4] pt-5">

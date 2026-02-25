@@ -24,7 +24,7 @@ export function Header() {
           <button
             className="md:hidden p-2 -ml-2 rounded-full hover:bg-[#F0E8DF] transition-colors"
             onClick={() => setMobileNavOpen(true)}
-            aria-label="Menu oeffnen"
+            aria-label="Menü öffnen"
           >
             <Menu className="w-5 h-5 text-[#2C1810]" />
           </button>
@@ -39,7 +39,7 @@ export function Header() {
             {[
               { label: "Shop", href: "#shop" },
               { label: "Standorte", href: "#standorte" },
-              { label: "Ueber uns", href: "#ueber-uns" },
+              { label: "Über uns", href: "#about" },
             ].map((link) => (
               <a
                 key={link.label}
@@ -51,14 +51,14 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Cart button */}
+          {/* Cart button - prominent matcha CTA */}
           <button
             onClick={() => setCartOpen(true)}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#7C9A6B] hover:bg-[#6B8A5A] text-white transition-colors"
-            aria-label="Warenkorb oeffnen"
+            className="flex items-center gap-2 bg-[#7C9A6B] hover:bg-[#6B8A5A] text-white rounded-full px-5 py-2.5 font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
           >
-            <ShoppingBag className="w-4 h-4" />
-            <span className="font-sans text-[13px] font-semibold">0</span>
+            <ShoppingBag size={18} />
+            <span>Box</span>
+            <span className="bg-white text-[#7C9A6B] rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">0</span>
           </button>
         </div>
       </header>
@@ -76,7 +76,7 @@ export function Header() {
             <button
               onClick={() => setMobileNavOpen(false)}
               className="absolute top-5 right-5 p-3 text-[#FAF6F0]/70 hover:text-[#FAF6F0] transition-colors"
-              aria-label="Menu schliessen"
+              aria-label="Menü schließen"
             >
               <X className="w-7 h-7" />
             </button>
@@ -84,7 +84,7 @@ export function Header() {
               {[
                 { label: "Shop", href: "#shop" },
                 { label: "Standorte", href: "#standorte" },
-                { label: "Ueber uns", href: "#ueber-uns" },
+                { label: "Über uns", href: "#about" },
               ].map((link, i) => (
                 <motion.a
                   key={link.label}
@@ -117,7 +117,7 @@ export function Header() {
           <SheetHeader className="border-b border-[#E8DFD4] pb-5">
             <SheetTitle className="font-serif text-2xl text-[#2C1810]">Deine Box</SheetTitle>
             <SheetDescription className="font-sans text-[13px] text-[#9C8B80]">
-              {"Fuege Cookies hinzu, um deine Box zu fuellen."}
+              Füge Cookies hinzu, um deine Box zu füllen.
             </SheetDescription>
           </SheetHeader>
           <div className="flex-1 flex flex-col items-center justify-center text-center px-6">
@@ -128,7 +128,7 @@ export function Header() {
               Deine Box ist noch leer.
             </p>
             <p className="font-sans text-sm text-[#9C8B80] mt-2 max-w-[200px]">
-              {"Entdecke unsere Sorten und fuege deine Favoriten hinzu."}
+              Entdecke unsere Sorten und füge deine Favoriten hinzu.
             </p>
             <a href="#shop" onClick={() => setCartOpen(false)} className="mt-6 inline-flex items-center gap-2 text-[#7C9A6B] font-sans text-sm font-semibold hover:gap-3 transition-all">
               Jetzt stöbern <ArrowRight className="w-4 h-4" />
@@ -138,7 +138,7 @@ export function Header() {
             <div className="w-full flex flex-col gap-3">
               <div className="flex justify-between font-sans text-sm text-[#2C1810]">
                 <span className="font-medium">Zwischensumme</span>
-                <span className="font-bold">{"0,00 \u20AC"}</span>
+                <span className="font-bold">{`0,00 \u20AC`}</span>
               </div>
               <button
                 disabled
@@ -147,7 +147,7 @@ export function Header() {
                 Zur Kasse
               </button>
               <p className="text-[11px] text-center text-[#9C8B80] font-sans">
-                {"Mindestbestellwert: 20\u20AC"}
+                {`Mindestbestellwert: 20\u20AC`}
               </p>
             </div>
           </SheetFooter>

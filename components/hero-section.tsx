@@ -86,16 +86,23 @@ export function HeroSection() {
             </a>
           </motion.div>
 
+          {/* FIX 4: Social proof row */}
           <motion.div
-            className="flex items-center gap-4 mt-2 text-[#9C8B80]"
+            className="flex items-center gap-4 flex-wrap mt-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.7 }}
           >
-            <span className="font-sans text-sm">{"4.9"}</span>
-            <span className="text-[#7C9A6B] font-sans text-sm font-semibold">{"10.000+ Kunden"}</span>
-            <span className="text-[#9C8B80]">{"\u00B7"}</span>
-            <span className="font-sans text-sm">{"Berlins beste Cookies"}</span>
+            <div className="flex items-center gap-1.5 bg-white rounded-full px-4 py-2 shadow-sm">
+              <span className="text-amber-400">{"⭐"}</span>
+              <span className="font-semibold text-sm text-[#2C1810]">4.9/5</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-white rounded-full px-4 py-2 shadow-sm">
+              <span className="text-sm text-[#2C1810] font-semibold">10.000+ Kunden</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-white rounded-full px-4 py-2 shadow-sm">
+              <span className="text-sm text-[#2C1810] font-semibold">{"🏆 Berlins beste Cookies"}</span>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -121,11 +128,10 @@ export function HeroSection() {
               <div className="absolute inset-0 opacity-30" style={{
                 background: "radial-gradient(circle at 50% 40%, rgba(250,246,240,0.4) 0%, transparent 60%)"
               }} />
-              <div className="w-full h-full flex items-center justify-center relative z-10">
-                <span className="text-[100px] md:text-[130px] drop-shadow-2xl">{"\uD83C\uDF6A"}</span>
-              </div>
-              <div className="absolute bottom-6 left-6 right-6 z-10">
-                <p className="font-serif text-xl md:text-2xl italic text-white/90">Chocolate Chip Classic</p>
+              {/* FIX 5: No product name, just big cookie + tagline */}
+              <div className="w-full h-full flex flex-col items-center justify-center relative z-10 gap-4">
+                <span className="text-[100px] drop-shadow-2xl">{"🍪"}</span>
+                <p className="font-sans text-sm italic text-white/60">Dein neues Lieblingsstück.</p>
               </div>
             </div>
           </motion.div>
@@ -136,7 +142,7 @@ export function HeroSection() {
             transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
             className="absolute top-4 -right-5 bg-white rounded-2xl px-3 py-2 shadow-lg text-sm font-semibold text-[#2C1810] flex items-center gap-1.5 z-10"
           >
-            {"\uD83C\uDF3F Handgemacht"}
+            {"🌿 Handgemacht"}
           </motion.div>
 
           <motion.div
@@ -144,7 +150,7 @@ export function HeroSection() {
             transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
             className="absolute bottom-16 -right-8 bg-[#7C9A6B] rounded-2xl px-3 py-2 shadow-lg text-sm font-semibold text-white flex items-center gap-1.5 z-10"
           >
-            {"\uD83C\uDF6B Gooey Guaranteed"}
+            {"🍫 Gooey Guaranteed"}
           </motion.div>
 
           <motion.div
@@ -152,7 +158,7 @@ export function HeroSection() {
             transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 1.4 }}
             className="absolute top-1/3 -left-8 bg-[#FAF6F0] border border-stone-200 rounded-2xl px-3 py-2 shadow-lg text-sm font-semibold text-[#2C1810] flex items-center gap-1.5 z-10"
           >
-            {"\u2728 T\u00E4glich Frisch"}
+            {"✨ Täglich Frisch"}
           </motion.div>
         </motion.div>
       </div>

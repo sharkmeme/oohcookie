@@ -8,31 +8,31 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
-const faqs = [
+const faqItems = [
   {
     question: "Was macht OOH! Cookies besonders?",
     answer:
-      "Wir geh\u00F6ren zu den ersten Cookie-Shops in Deutschland, die NYC-Style Cookies etabliert haben. Alles wird t\u00E4glich frisch in unserer eigenen B\u00E4ckerei in Berlin-Mitte gebacken.",
+      "Wir gehören zu den ersten Cookie-Shops in Deutschland, die NYC-Style Cookies etabliert haben. Alles wird täglich frisch in unserer eigenen Bäckerei in Berlin-Mitte gebacken \u2014 mit ausgewählten, natürlichen Zutaten ohne Kompromisse.",
   },
   {
     question: "Gibt es neue Sorten?",
     answer:
-      "Jeden Monat gibt es einen neuen Monthly Special \u2014 saisonal inspiriert und streng limitiert. Zwischendrin \u00FCberraschen wir euch auch zu besonderen Anl\u00E4ssen.",
+      "Jeden Monat gibt es einen neuen Monthly Special \u2014 saisonal inspiriert und streng limitiert. Zwischendrin überraschen wir euch auch zu besonderen Anlässen wie Valentinstag oder besonderen Events.",
   },
   {
     question: "Gibt es vegane Cookies?",
     answer:
-      "Ja! Unsere veganen Sorten sind im Shop entsprechend gekennzeichnet.",
+      "Ja! Unsere veganen Sorten sind im Shop entsprechend gekennzeichnet. Schau einfach auf die Produktbeschreibung \u2014 dort findest du alle Hinweise zu Zutaten und Allergenen.",
   },
   {
-    question: "Wie l\u00E4uft die Online-Bestellung ab?",
+    question: "Wie läuft die Online-Bestellung ab?",
     answer:
-      "Einfach Cookies aussuchen, in die Box legen und bestellen. Versandtage sind Montag bis Mittwoch \u2014 deine Cookies werden am selben Tag frisch gebacken und verschickt.",
+      "Einfach Cookies aussuchen, in die Box legen und bestellen. Versandtage sind Montag bis Mittwoch \u2014 deine Cookies werden am selben Tag frisch gebacken und verschickt. Nach dem Versand erhältst du eine Bestätigung mit Sendungsverfolgung.",
   },
   {
     question: "Wie lange sind die Cookies haltbar?",
     answer:
-      "Nach dem Versand bleiben deine Cookies 7 Tage frisch. Luftdicht verpackt bei Raumtemperatur behalten sie ihre weiche, chewy Konsistenz.",
+      "Nach dem Versand bleiben deine Cookies 7 Tage frisch. Am besten luftdicht verpackt bei Raumtemperatur aufbewahren \u2014 so behalten sie ihre weiche, chewy Konsistenz am längsten.",
   },
 ]
 
@@ -52,11 +52,11 @@ export function FaqSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <span className="font-sans text-[11px] font-bold uppercase tracking-[0.2em] text-[#7C9A6B] mb-4 block">
+        <div className="inline-flex items-center gap-1.5 bg-[#EAF2E5] text-[#4A7C59] rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-widest mb-4">
           FAQ
-        </span>
+        </div>
         <h2 className="font-serif text-[40px] md:text-[56px] lg:text-[64px] font-bold text-[#2C1810]">
-          {"Kurz erkl\u00E4rt."}
+          Kurz erklärt.
         </h2>
       </motion.div>
 
@@ -68,12 +68,12 @@ export function FaqSection() {
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
       >
         <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, i) => (
-            <AccordionItem key={i} value={`item-${i}`} className="border-b border-[#E8DFD4]">
-              <AccordionTrigger className="font-sans text-[15px] font-semibold text-[#2C1810] hover:no-underline py-6 text-left">
+          {faqItems.map((faq, i) => (
+            <AccordionItem key={i} value={`item-${i}`} className="border-b border-stone-100 py-1">
+              <AccordionTrigger className="font-sans text-[17px] font-semibold text-[#2C1810] hover:no-underline py-5 text-left">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="font-sans text-[14px] text-[#9C8B80] leading-relaxed pb-6">
+              <AccordionContent className="font-sans text-[15px] text-stone-500 leading-relaxed pb-5">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
