@@ -1,3 +1,4 @@
+import { CustomCursor } from "@/components/custom-cursor"
 import { IntroOverlay } from "@/components/intro-overlay"
 import { AnnouncementBar } from "@/components/announcement-bar"
 import { Header } from "@/components/header"
@@ -16,6 +17,7 @@ import { MobileBottomBar } from "@/components/mobile-bottom-bar"
 export default function Home() {
   return (
     <main>
+      <CustomCursor />
       <IntroOverlay />
       <AnnouncementBar />
       <Header />
