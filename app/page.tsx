@@ -69,49 +69,54 @@ const oohItems = ["Täglich handgebacken in Berlin", "100% natürliche Zutaten",
 
 /* ─── INTRO OVERLAY ─── */
 
+const INTRO_STEPS = [
+  { text: "OOH... du magst Cookies?", font: "font-serif italic", size: "text-[40px] md:text-[68px]", color: "text-[#FAF6F0]", ms: 800, spring: false, underline: false, staggerWords: false },
+  { text: "Wir auch.", font: "font-serif font-bold", size: "text-[52px] md:text-[88px]", color: "text-[#FAF6F0]", ms: 700, spring: false, underline: false, staggerWords: false },
+  { text: "Deshalb haben wir den perfekten erschaffen.", font: "font-sans", size: "text-[24px] md:text-[36px]", color: "text-[#9C8B80]", ms: 800, spring: false, underline: false, staggerWords: false },
+  { text: "Wir pr\u00e4sentieren stolz...", font: "font-sans italic", size: "text-[22px] md:text-[32px]", color: "text-[#7C9A6B]", ms: 700, spring: false, underline: false, staggerWords: false },
+  { text: "OOH! Cookies.", font: "font-serif font-bold", size: "text-[72px] md:text-[120px]", color: "text-[#FAF6F0]", ms: 1200, spring: false, underline: true, staggerWords: false },
+  { text: "Handgemacht. T\u00e4glich frisch. Unwiderstehlich.", font: "font-sans uppercase tracking-widest", size: "text-[14px] md:text-[20px]", color: "text-[#9C8B80]", ms: 800, spring: false, underline: false, staggerWords: true },
+  { text: "Yummy.", font: "font-serif font-bold italic", size: "text-[80px] md:text-[140px]", color: "text-[#FAF6F0]", ms: 800, spring: true, underline: false, staggerWords: false },
+] as const
+
 function IntroOverlay({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState<"cookie" | "sequence" | "done">("cookie")
   const [seqStep, setSeqStep] = useState(0)
   const [seqVisible, setSeqVisible] = useState(true)
+  const onDoneRef = useRef(onDone)
+  onDoneRef.current = onDone
 
   useEffect(() => {
-    document.body.style.overflow = phase === "done" ? "unset" : "hidden"
+    if (phase === "done") {
+      document.body.style.overflow = "unset"
+      onDoneRef.current()
+    } else {
+      document.body.style.overflow = "hidden"
+    }
     return () => { document.body.style.overflow = "unset" }
   }, [phase])
 
   useEffect(() => {
-    if (phase === "done") onDone()
-  }, [phase, onDone])
-
-  const steps = [
-    { text: "OOH... du magst Cookies?", font: "font-serif italic", size: "text-[40px] md:text-[68px]", color: "text-[#FAF6F0]", ms: 800 },
-    { text: "Wir auch. 🍪", font: "font-serif font-bold", size: "text-[52px] md:text-[88px]", color: "text-[#FAF6F0]", ms: 700 },
-    { text: "Deshalb haben wir den perfekten erschaffen.", font: "font-sans", size: "text-[24px] md:text-[36px]", color: "text-[#9C8B80]", ms: 800 },
-    { text: "Wir präsentieren stolz...", font: "font-sans italic", size: "text-[22px] md:text-[32px]", color: "text-[#7C9A6B]", ms: 700 },
-    { text: "OOH! Cookies.", font: "font-serif font-bold", size: "text-[72px] md:text-[120px]", color: "text-[#FAF6F0]", ms: 1200, underline: true },
-    { text: "Handgemacht. Täglich frisch. Unwiderstehlich.", font: "font-sans uppercase tracking-widest", size: "text-[14px] md:text-[20px]", color: "text-[#9C8B80]", ms: 800, staggerWords: true },
-    { text: "Yummy. 😋", font: "font-serif font-bold italic", size: "text-[80px] md:text-[140px]", color: "text-[#FAF6F0]", ms: 800, spring: true },
-  ]
-
-  useEffect(() => {
     if (phase !== "sequence") return
-    if (seqStep >= steps.length) {
+    if (seqStep >= INTRO_STEPS.length) {
       const t = setTimeout(() => setPhase("done"), 600)
       return () => clearTimeout(t)
     }
     setSeqVisible(true)
+    const showMs = INTRO_STEPS[seqStep].ms
+    let t2: ReturnType<typeof setTimeout>
     const t1 = setTimeout(() => {
       setSeqVisible(false)
-      const t2 = setTimeout(() => setSeqStep(s => s + 1), 300)
-      return () => clearTimeout(t2)
-    }, steps[seqStep].ms)
-    return () => clearTimeout(t1)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+      t2 = setTimeout(() => setSeqStep(s => s + 1), 300)
+    }, showMs)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [phase, seqStep])
 
   const skip = useCallback(() => setPhase("done"), [])
 
   if (phase === "done") return null
+
+  const currentStep = phase === "sequence" && seqStep < INTRO_STEPS.length ? INTRO_STEPS[seqStep] : null
 
   return (
     <AnimatePresence>
@@ -123,7 +128,6 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
         >
           {phase === "cookie" && (
             <>
-              {/* Repeating COOKIES text */}
               <div className="absolute top-12 left-0 right-0 flex items-center justify-center gap-8 overflow-hidden">
                 {[0, 1, 2, 3].map(ri => (
                   <motion.div key={ri} className="flex" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.04, delayChildren: ri * 0.15 } } }}>
@@ -142,7 +146,6 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
                 ))}
               </div>
 
-              {/* Spinning cookie */}
               <motion.div
                 className="relative"
                 style={{ width: 280, height: 280 }}
@@ -166,7 +169,7 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
                     className="bg-[#7C9A6B] text-white rounded-full px-5 py-2.5 text-sm font-bold font-sans whitespace-nowrap cursor-pointer hover:bg-[#6B8A5A] transition-colors"
                     style={{ boxShadow: "0 4px 20px rgba(124,154,107,0.6)" }}
                   >
-                    {"Jetzt rein. 🍪"}
+                    Jetzt rein.
                   </button>
                 </motion.div>
               </motion.div>
@@ -176,29 +179,29 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
                 animate={{ opacity: [0.4, 1, 0.4] }}
                 transition={{ repeat: Infinity, duration: 2 }}
               >
-                Handgemacht in Berlin · Täglich frisch
+                Handgemacht in Berlin
               </motion.p>
             </>
           )}
 
-          {phase === "sequence" && seqStep < steps.length && (
+          {phase === "sequence" && currentStep && (
             <div className="flex items-center justify-center px-6 text-center">
               <AnimatePresence mode="wait">
                 {seqVisible && (
                   <motion.div
                     key={seqStep}
-                    initial={steps[seqStep].spring ? { opacity: 0, scale: 0.3 } : { opacity: 0, scale: 0.75 }}
+                    initial={currentStep.spring ? { opacity: 0, scale: 0.3 } : { opacity: 0, scale: 0.75 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 1.15 }}
-                    transition={steps[seqStep].spring ? { type: "spring", stiffness: 200, damping: 12 } : { duration: 0.35, ease: "backOut" }}
+                    transition={currentStep.spring ? { type: "spring", stiffness: 200, damping: 12 } : { duration: 0.35, ease: "backOut" }}
                     className="relative"
                   >
-                    {steps[seqStep].staggerWords ? (
+                    {currentStep.staggerWords ? (
                       <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-                        {steps[seqStep].text.split(". ").map((word, wi, arr) => (
+                        {currentStep.text.split(". ").map((word, wi, arr) => (
                           <motion.span
                             key={wi}
-                            className={`${steps[seqStep].font} ${steps[seqStep].size} ${steps[seqStep].color}`}
+                            className={`${currentStep.font} ${currentStep.size} ${currentStep.color}`}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: wi * 0.15 }}
@@ -208,11 +211,11 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
                         ))}
                       </div>
                     ) : (
-                      <span className={`${steps[seqStep].font} ${steps[seqStep].size} ${steps[seqStep].color} leading-none`}>
-                        {steps[seqStep].text}
+                      <span className={`${currentStep.font} ${currentStep.size} ${currentStep.color} leading-none`}>
+                        {currentStep.text}
                       </span>
                     )}
-                    {steps[seqStep].underline && (
+                    {currentStep.underline && (
                       <motion.div
                         className="h-[3px] bg-[#7C9A6B] mt-2 rounded-full"
                         initial={{ scaleX: 0 }}
@@ -228,7 +231,7 @@ function IntroOverlay({ onDone }: { onDone: () => void }) {
           )}
 
           <button onClick={skip} className="fixed bottom-6 right-6 font-sans text-xs text-[#9C8B80]/60 cursor-pointer hover:text-[#9C8B80] transition-colors z-[10000]">
-            {"überspringen →"}
+            {"\u00fcberspringen \u2192"}
           </button>
         </motion.div>
       )}
@@ -298,7 +301,7 @@ function ProductCard({ product, index }: { product: typeof products[0]; index: n
       className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
     >
       <div className="aspect-square relative overflow-hidden" style={{ background: product.gradient }}>
-        <div className="flex items-center justify-center h-full text-[80px]">🍪</div>
+        <div className="absolute inset-10 rounded-full" style={{ background: "radial-gradient(circle at 38% 35%, rgba(255,255,255,0.15), transparent 60%)" }} />
         <div className="absolute bottom-0 left-0 right-0 h-2/5" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55), transparent)" }} />
         <span className="absolute bottom-4 left-4 font-serif italic font-bold text-white text-[19px]">{product.name}</span>
         {product.badge && (
@@ -467,7 +470,7 @@ export default function Home() {
               </button>
             </div>
             <div className="mt-6 flex items-center gap-3 flex-wrap">
-              {["⭐ 4.9 / 5", "10.000+ Kunden", "🏆 Berlins beste Cookies"].map(pill => (
+              {["4.9 / 5 Sterne", "10.000+ Kunden", "Berlins beste Cookies"].map(pill => (
                 <span key={pill} className="bg-white rounded-full px-4 py-2 shadow-sm text-sm font-semibold text-[#2C1810]">{pill}</span>
               ))}
             </div>
@@ -482,9 +485,14 @@ export default function Home() {
                 animate={{ rotate: [0, 2, 0, -2, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               >
-                <div className="flex items-center justify-center h-full text-[100px]">🍪</div>
+                {/* Large cookie visual built from CSS */}
+                <div className="absolute inset-8 rounded-full" style={{ background: "radial-gradient(circle at 38% 35%, #D4956A, #B5722A 40%, #8B5530 70%, #6B3F20)", boxShadow: "inset -8px -8px 20px rgba(0,0,0,0.25), inset 4px 4px 12px rgba(255,220,150,0.2)" }}>
+                  {chips.slice(0, 7).map((c, i) => (
+                    <div key={i} className="absolute" style={{ top: c.top, left: c.left, width: c.w * 1.2, height: c.h * 1.2, background: "#1E0E08", borderRadius: "42% 58% 55% 45% / 48% 46% 54% 52%" }} />
+                  ))}
+                </div>
                 <div className="absolute bottom-0 left-0 right-0 h-1/3" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.4), transparent)" }} />
-                <span className="absolute bottom-5 left-5 font-serif italic text-white text-[18px]">Dein neues Lieblingsstück.</span>
+                <span className="absolute bottom-5 left-5 font-serif italic text-white text-[18px]">Dein neues Lieblingsst\u00fcck.</span>
               </motion.div>
 
               {/* Floating badges */}
@@ -493,21 +501,21 @@ export default function Home() {
                 animate={{ y: [0, -14, 0], rotate: [-2, 2, -2] }}
                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
               >
-                {"🌿 Handgemacht"}
+                <Leaf size={14} className="text-[#7C9A6B] inline mr-1" />Handgemacht
               </motion.div>
               <motion.div
                 className="absolute bottom-16 -right-10 bg-[#7C9A6B] rounded-2xl px-3 py-2 shadow-lg text-sm font-semibold text-white z-10"
                 animate={{ y: [0, 12, 0], rotate: [1, -2, 1] }}
                 transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 0.9 }}
               >
-                {"🍫 Gooey Guaranteed"}
+                Gooey Guaranteed
               </motion.div>
               <motion.div
                 className="absolute top-1/3 -left-10 bg-[#FAF6F0] border border-stone-200 rounded-2xl px-3 py-2 shadow-lg text-sm font-semibold text-[#2C1810] z-10"
                 animate={{ y: [0, -10, 0], rotate: [2, -1, 2] }}
                 transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
               >
-                {"✨ Täglich Frisch"}
+                <Zap size={14} className="text-amber-400 inline mr-1" />{" T\u00e4glich Frisch"}
               </motion.div>
             </div>
           </motion.div>
@@ -555,7 +563,7 @@ export default function Home() {
       <motion.section {...sectionAnim} className="bg-[#1A0F07] py-20 px-6 md:px-16 relative grain-texture">
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto relative z-10">
           <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} viewport={{ once: true }}>
-            <span className="font-serif text-[80px] text-[#7C9A6B] leading-none select-none block">{"„"}</span>
+            <span className="font-serif text-[80px] text-[#7C9A6B] leading-none select-none block">{"\u201E"}</span>
             <p className="font-serif italic text-white text-[32px] md:text-5xl leading-tight mt-[-20px]">Nicht einfach ein Cookie. Ein Erlebnis.</p>
             <p className="font-sans text-[15px] text-[#9C8B80] mt-4">Handgebacken in Berlin-Mitte, seit dem ersten Tag.</p>
           </motion.div>
@@ -577,7 +585,11 @@ export default function Home() {
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} viewport={{ once: true }}>
             <div className="bg-gradient-to-br from-[#3D1F0A] to-[#1A0F07] rounded-3xl p-8 border border-white/10">
               <SectionBadge label="Monthly Drop" dark />
-              <div className="text-[100px] text-center my-4">🍪</div>
+              <div className="flex items-center justify-center my-4">
+                <div className="w-24 h-24 rounded-full relative" style={{ background: "radial-gradient(circle at 38% 35%, #8B2252, #5B1035 50%, #3D0A22)", boxShadow: "0 6px 30px rgba(91,16,53,0.5)" }}>
+                  <div className="absolute inset-2 rounded-full" style={{ background: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.12), transparent 60%)" }} />
+                </div>
+              </div>
               <h3 className="font-serif italic text-white text-[28px] mt-4">Black Forest Cake Cookie</h3>
               <p className="font-sans text-[15px] text-white/60 mt-1">Schwarzwälder Kirschtorte trifft NYC Cookie.</p>
               <span className="inline-flex border border-[#7C9A6B]/40 text-[#7C9A6B] rounded-full px-3 py-1 text-xs mt-4">Limitiert verfügbar</span>
@@ -632,7 +644,7 @@ export default function Home() {
             {/* Others */}
             <motion.div className="bg-[#FDF5F5] border-2 border-red-200 rounded-3xl p-8" initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
               <div className="flex items-center gap-2 mb-6">
-                <span className="text-xl">⚠️</span>
+                <Ban size={20} className="text-red-400" />
                 <h3 className="font-sans font-bold text-[20px] text-stone-400">Andere Cookies</h3>
               </div>
               {othersItems.map((item, i) => (
@@ -801,7 +813,7 @@ export default function Home() {
         </div>
         <div className="border-t border-white/10 mt-8 pt-8 flex justify-between items-center flex-wrap gap-4 max-w-6xl mx-auto">
           <span className="font-sans text-white/40 text-sm">© 2026 OOH! Cookies · Berlin</span>
-          <span className="font-sans text-white/30 text-xs italic">{"Mit 🍪 gemacht in Berlin"}</span>
+          <span className="font-sans text-white/30 text-xs italic">Mit Liebe gemacht in Berlin</span>
         </div>
       </footer>
 
@@ -809,11 +821,11 @@ export default function Home() {
       <Sheet open={cartOpen} onOpenChange={setCartOpen}>
         <SheetContent side="right" className="w-full sm:max-w-md bg-[#FAF6F0]">
           <SheetHeader>
-            <SheetTitle className="font-serif font-bold text-2xl">{"Deine Box 🍪"}</SheetTitle>
+            <SheetTitle className="font-serif font-bold text-2xl">Deine Box</SheetTitle>
             <SheetDescription className="sr-only">Warenkorb</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col items-center justify-center mt-20">
-            <span className="text-[72px]">🍪</span>
+            <ShoppingBag size={64} className="text-[#E8DFD4]" />
             <p className="font-serif text-[22px] text-[#2C1810] mt-4">Deine Box ist noch leer.</p>
             <p className="font-sans text-[15px] text-[#9C8B80] mt-2">Füge deine Lieblingscookies hinzu.</p>
           </div>
